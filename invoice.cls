@@ -48,6 +48,7 @@
 % Counters for totaling up hours and dollars
 \newcounter{hours} \newcounter{subhours} \newcounter{cost} \newcounter{subcost}
 \setcounter{hours}{0} \setcounter{subhours}{0} \setcounter{cost}{0} \setcounter{subcost}{0}
+\newcounter{vatvalue}
 
 % Formats inputed number with 2 digits after the decimal place
 \newcommand*{\formatNumber}[1]{\FPround{\cost}{#1}{2}\cost} %
@@ -71,6 +72,15 @@
          ##1 & & \$\formatNumber{##2} & \$\FPmul{\cost}{##2}{1}\formatNumber{\cost}%
          \\
     }
+
+	% Create a new row from title and expense amount
+    \newcommand*{\vatrow}[2]{%
+         \addtocounter{cost}{\value{subcost} * \real{##2}}% 
+         \setcounter{vatvalue}{\value{subcost} * \real{##2}}
+	##1 & & \FPmul{\ob}{##2}{100}\formatNumber{\ob}\% & \$\total{vatvalue} %
+         \\
+    }
+    
 
     \newcommand{\subtotalNoStar}{
         {\bf Subtotal} & {\bf \total{subhours} hours} &  & {\bf \$\total{subcost}}
